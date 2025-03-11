@@ -143,7 +143,7 @@ function App() {
               root: classes.popoverRoot,
             }}
             PaperProps={{
-              style: { width: "35%", height: "35%", marginTop: "200px", padding: "20px" },
+              style: { width: "35%", height: "45%", marginTop: "200px", padding: "20px" },
             }}
           >
             <AddTaskComponent />
