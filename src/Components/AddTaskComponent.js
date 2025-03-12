@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import DateFnsUtils from '@date-io/date-fns';
@@ -42,7 +42,7 @@ function UploadButtons() {
 }
 
 function UploadForm() {
-    const [uploadProgress, setUploadProgress] = React.useState(0);
+    const [uploadProgress, setUploadProgress] = useState(0);
 
     const handleFileUpload = (event) => {
         const file = event.target.files[0];
@@ -72,11 +72,25 @@ function UploadForm() {
 }
 
 const AddTaskComponent = () => {
-    const [selectedDate, setSelectedDate] = React.useState(new Date());
+    const [state, setState] = useState({
+        creationDate: new Date(),
+        heading: "",
+        description: "",
+        imageUrl: ""
+    })
 
     const handleDateChange = (date) => {
-        setSelectedDate(date);
+        setState(prev => ({...prev, creationDate: date}))
     };
+
+    const handleChange = (e) => {
+        setState(prev => ({...state, [e.target.name]: e.target.value}))
+    }
+
+    const handleSave = (e) => {
+        e.preventDefault();
+        console.log(state);
+    }
 
     return (
         <React.Fragment>
@@ -89,7 +103,7 @@ const AddTaskComponent = () => {
                 alignContent='space-around'
             >
                 <Grid container item xs={12} spacing={3} justifyContent='flex-start'>
-                    <Grid item xs={6}>
+                    <Grid item xs={12} sm={12} md={6}>
                         <FormControl fullWidth>
                             <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                 <KeyboardDatePicker
@@ -99,7 +113,7 @@ const AddTaskComponent = () => {
                                     margin="normal"
                                     id="date-picker-inline"
                                     label="Schedule Task"
-                                    value={selectedDate}
+                                    value={state["creationDate"]}
                                     onChange={handleDateChange}
                                     KeyboardButtonProps={{
                                         'aria-label': 'change date',
@@ -108,27 +122,27 @@ const AddTaskComponent = () => {
                             </MuiPickersUtilsProvider>
                         </FormControl>
                     </Grid>
-                    <Grid item xs={10}>
+                    <Grid item xs={12} sm={12} md={10}>
                         <FormControl fullWidth>
-                            <TextField label="Enter your task's heading" variant="outlined" size="small" />
+                            <TextField label="Enter your task's heading" variant="outlined" size="small" onChange={handleChange} name="heading" />
                         </FormControl>
                     </Grid>
-                    <Grid item xs={10}>
+                    <Grid item xs={12} sm={12} md={10}>
                         <FormControl fullWidth>
-                            <TextField label="Give a brief description for your task" variant="outlined" size="small" />
+                            <TextField label="Give a brief description for your task" variant="outlined" size="small" onChange={handleChange} name="description" />
                         </FormControl>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={12} sm={12} md={10}>
                         <FormControl fullWidth>
                             {/* <UploadForm /> */}
-                            <TextField label="Give a url for your picture" variant="outlined" size="small" />
+                            <TextField label="Give a url for your picture" variant="outlined" size="small" onChange={handleChange} name="imageUrl" />
                         </FormControl>
                     </Grid>
                 </Grid>
                 <Grid container item xs={12} spacing={2} justifyContent='center'>
-                    <Grid item xs={4}>
+                    <Grid item xs={6} sm={4}>
                         <FormControl fullWidth>
-                            <Button variant="contained" color="primary" size="medium">
+                            <Button variant="contained" color="primary" size="medium" onClick={handleSave}>
                                 Save Task
                             </Button>
                         </FormControl>
