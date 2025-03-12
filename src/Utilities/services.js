@@ -21,19 +21,11 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-// Initialize Firebase
 export const firebaseApp = initializeApp(firebaseConfig);
 export const auth = getAuth(firebaseApp);
 export const db = getFirestore(firebaseApp);
 export const analytics = getAnalytics(firebaseApp);
 
-// const userObj = {
-//     creationDate: new Date(),
-//     name: formData['name'],
-//     email: formData['email'],
-//     country: formData['country'],
-//     phone: formData['phone']
-// }
 
 export const addTask = async (taskData, cb) => {
     try {

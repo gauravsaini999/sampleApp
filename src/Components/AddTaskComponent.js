@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import DateFnsUtils from '@date-io/date-fns';
@@ -8,7 +8,9 @@ import {
 } from '@material-ui/pickers';
 import { Grid, TextField, Button, FormControl, Divider } from '@material-ui/core';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import { addTask } from '../Utilities/services'
+import { addTask as addTaskService } from '../Utilities/services';
+import { useSelector, useDispatch } from 'react-redux';
+import { addTask, editTask, getTasks, deleteTasks } from '../Store/Reducers/tasksActions';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -73,6 +75,9 @@ function UploadForm() {
 }
 
 const AddTaskComponent = () => {
+    const tasks = useSelector((state) => state.tasks);
+    const dispatch = useDispatch();
+
     const [state, setState] = useState({
         creationDate: new Date(),
         heading: "",
@@ -81,7 +86,7 @@ const AddTaskComponent = () => {
     })
 
     const handleDateChange = (date) => {
-        setState(prev => ({...prev, creationDate: date}))
+        setState(prev => ({...prev, creationDate: date.toString()}))
     };
 
     const handleChange = (e) => {
@@ -91,10 +96,16 @@ const AddTaskComponent = () => {
     const handleSave = (e) => {
         e.preventDefault();
         console.log(state);
-        addTask(state, (id) => {
+        dispatch(addTask(state));
+        addTaskService(state, (id) => {
             console.log(id);
         });
     }
+
+    useEffect(() => {
+        console.log(tasks, 'tasks')
+    }, [tasks]);
+    
 
     return (
         <React.Fragment>
@@ -138,7 +149,6 @@ const AddTaskComponent = () => {
                     </Grid>
                     <Grid item xs={12} sm={12} md={10}>
                         <FormControl fullWidth>
-                            {/* <UploadForm /> */}
                             <TextField label="Give a url for your picture" variant="outlined" size="small" onChange={handleChange} name="imageUrl" />
                         </FormControl>
                     </Grid>

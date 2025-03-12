@@ -1,9 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit'
-import postsReducer from './Reducers/tasksReducer'
+import tasksReducer from './Reducers/tasksReducer';
 
 const store = configureStore({
     reducer: {
-        posts: postsReducer,
+        tasks: tasksReducer,
     },
 })
 

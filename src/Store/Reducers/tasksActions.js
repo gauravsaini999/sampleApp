@@ -1,4 +1,4 @@
-import { ADD_TASK, EDIT_TASK, GET_TASKS, DELETE_TASK } from "./tasksConstants";
+import { ADD_TASK, EDIT_TASK, GET_TASKS, DELETE_TASK, CLEAR_TASKS } from "./tasksConstants";
 
 export const addTask = (task) => {
     return {
@@ -14,10 +14,9 @@ export const editTask = (taskId, newData) => {
     }
 }
 
-export const getTasks = (tasks) => {
+export const getTasks = () => {
     return { 
         type: GET_TASKS,
-        payload: tasks
     }
 }
 
@@ -25,5 +24,11 @@ export const deleteTasks = (taskId) => {
     return {
         type: DELETE_TASK,
         payload: { taskId }
+    }
+}
+
+export const clearTasks = () => {
+    return {
+        type: CLEAR_TASKS
     }
 }
