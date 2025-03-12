@@ -23,7 +23,7 @@ export default function tasksReducer(state = initialState, action) {
         }
             break;
         case DELETE_TASK: {
-            const index = state.findIndex((task) => task.id == action.payload.taskId);
+            const index = state.indexOf((task) => task.id == action.payload.taskId);
             let temp;
             if (index !== -1) {
                 temp = [...state];

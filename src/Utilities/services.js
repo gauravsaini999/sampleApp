@@ -1,15 +1,8 @@
-import * as React from 'react';
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "firebase/firestore";
-// Import the functions you need from the SDKs you need
 import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
     apiKey: "AIzaSyB6YxEaCLNFfoI5KcidiRQmH1af9N6Xlt8",
     authDomain: "task-management-8c708.firebaseapp.com",
@@ -20,7 +13,6 @@ const firebaseConfig = {
     measurementId: "G-R70L7KGW1Q"
 };
 
-// Initialize Firebase
 export const firebaseApp = initializeApp(firebaseConfig);
 export const auth = getAuth(firebaseApp);
 export const db = getFirestore(firebaseApp);
@@ -31,9 +23,10 @@ export const addTask = async (taskData, cb) => {
     try {
         const docRef = await addDoc(collection(db, "tasks"), taskData);
         console.log("task written with ID: ", docRef.id);
-        cb(docRef.id);
+        cb(docRef.id, "success");
     } catch (e) {
         console.error("Error adding task: ", e);
+        cb(e, "error")
     }
 }
 
@@ -52,7 +45,6 @@ export const delTask = async (docId, cb) => {
                 cb("Error removing task: ", error);
         });
 }
-
 
 export const getTasks = async (cb) => {
     const querySnapshot = await getDocs(collection(db, "tasks"));

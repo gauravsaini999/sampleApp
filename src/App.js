@@ -1,13 +1,14 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import AddIcon from '@material-ui/icons/Add';
 import SearchIcon from '@material-ui/icons/Search';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import {
-  Popover, AppBar, CssBaseline, Toolbar, Typography, IconButton, Paper, Fab, Grid, FormControl, TextField,
-  List, ListItem, ListItemAvatar, ListItemText, ListSubheader, Avatar, Box, Button
+  Popover, AppBar, CssBaseline, Toolbar, Typography, IconButton, Paper, Fab,
+  List, ListItem, ListItemAvatar, ListItemText, ListSubheader, Avatar, Snackbar
 } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
 import AddTaskComponent from './Components/AddTaskComponent';
 import { images } from './Utilities/URLs';
 
@@ -109,12 +110,22 @@ const useStyles = makeStyles((theme) => ({
 
 function App() {
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [openSnack, setOpenSnack] = useState(false);
+  const [saveMsg, setSaveMsg] = useState('');
+  const handleCloseSnack = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenSnack(false);
+  };
+  const [anchorEl, setAnchorEl] = useState(null);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  const handleClose = () => {
+  const handleClose = (snackMsg) => {
     setAnchorEl(null);
+    setOpenSnack(true);
+    setSaveMsg(snackMsg);
   };
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
@@ -158,8 +169,25 @@ function App() {
               paper: classes.popoverPaper
             }}
           >
-            <AddTaskComponent />
+            <AddTaskComponent handleClose={handleClose} />
           </Popover>
+          <Snackbar
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'left',
+            }}
+            open={openSnack}
+            autoHideDuration={6000}
+            onClose={handleCloseSnack}
+            message={saveMsg}
+            action={
+              <React.Fragment>
+                <IconButton size="small" aria-label="close" color="inherit" onClick={handleCloseSnack}>
+                  <CloseIcon fontSize="small" />
+                </IconButton>
+              </React.Fragment>
+            }
+          />
           <div className={classes.grow} />
           <IconButton color="inherit">
             <SearchIcon />

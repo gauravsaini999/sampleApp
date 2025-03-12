@@ -6,7 +6,7 @@ import {
     MuiPickersUtilsProvider,
     KeyboardDatePicker,
 } from '@material-ui/pickers';
-import { Grid, TextField, Button, FormControl, Divider } from '@material-ui/core';
+import { Grid, TextField, Button, FormControl } from '@material-ui/core';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { addTask as addTaskService } from '../Utilities/services';
 import { useSelector, useDispatch } from 'react-redux';
@@ -74,11 +74,12 @@ function UploadForm() {
     );
 }
 
-const AddTaskComponent = () => {
+const AddTaskComponent = ({handleClose}) => {
     const tasks = useSelector((state) => state.tasks);
     const dispatch = useDispatch();
 
     const [state, setState] = useState({
+        id: 0,
         creationDate: new Date(),
         heading: "",
         description: "",
@@ -86,26 +87,30 @@ const AddTaskComponent = () => {
     })
 
     const handleDateChange = (date) => {
-        setState(prev => ({...prev, creationDate: date.toString()}))
+        setState(prev => ({ ...prev, creationDate: date.toString() }))
     };
 
     const handleChange = (e) => {
-        setState(prev => ({...state, [e.target.name]: e.target.value}))
+        setState(prev => ({ ...prev, [e.target.name]: e.target.value }))
     }
 
     const handleSave = (e) => {
         e.preventDefault();
-        console.log(state);
         dispatch(addTask(state));
-        addTaskService(state, (id) => {
-            console.log(id);
+        addTaskService(state, (id_or_err, type) => {
+            if (type == 'success') {
+                console.log(id_or_err);
+                handleClose('Record has been saved with id: ' + id_or_err + ' in firebase');
+            }
+            else {
+                handleClose('Error saving record: ' + id_or_err + ' in firebase. You have to try again.');
+            }
         });
     }
 
     useEffect(() => {
         console.log(tasks, 'tasks')
     }, [tasks]);
-    
 
     return (
         <React.Fragment>
