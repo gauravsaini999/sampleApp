@@ -8,6 +8,7 @@ import {
 } from '@material-ui/pickers';
 import { Grid, TextField, Button, FormControl, Divider } from '@material-ui/core';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import { addTask } from '../Utilities/services'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -90,6 +91,9 @@ const AddTaskComponent = () => {
     const handleSave = (e) => {
         e.preventDefault();
         console.log(state);
+        addTask(state, (id) => {
+            console.log(id);
+        });
     }
 
     return (

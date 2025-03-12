@@ -4,7 +4,6 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "firebase/firestore";
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -26,7 +25,7 @@ const firebaseConfig = {
 export const firebaseApp = initializeApp(firebaseConfig);
 export const auth = getAuth(firebaseApp);
 export const db = getFirestore(firebaseApp);
-export const analytics = getAnalytics(app);
+export const analytics = getAnalytics(firebaseApp);
 
 // const userObj = {
 //     creationDate: new Date(),
@@ -36,10 +35,11 @@ export const analytics = getAnalytics(app);
 //     phone: formData['phone']
 // }
 
-export const addTask = async (taskData) => {
+export const addTask = async (taskData, cb) => {
     try {
         const docRef = await addDoc(collection(db, "tasks"), taskData);
         console.log("task written with ID: ", docRef.id);
+        cb(docRef.id);
     } catch (e) {
         console.error("Error adding task: ", e);
     }
