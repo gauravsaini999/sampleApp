@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { addTask as addTaskService } from '../Utilities/services';
-import { addTask, editTask, getTasks, deleteTasks, persistAllTasks, clearTasks } from '../Store/Reducers/tasksActions';
+import { addTask, editTask, getTasks, deleteTasks, persistAllTasks, clearTasks, addMultipleTasks } from '../Store/Reducers/tasksActions';
 import { images } from '../Utilities/URLs';
 
 const messages = [
@@ -130,42 +130,10 @@ const messages = [
 ];
 
 const useInit = () => {
-    let initialize = JSON.parse(localStorage.getItem("initCounter"));
     const dispatch = useDispatch();
-    const [saveMsg, setSaveMsg] = useState("Done Init Uploads");
-    let successfulUploads = [];
-    let erroredUploads = [];
-    if (+initialize == 0) {
-        messages.forEach((message) => {
-            dispatch(addTask(message));
-            addTaskService(message, (id_or_err, type) => {
-                if (type == 'success') {
-                    successfulUploads.push({ firebaseId: id_or_err, id: message.id });
-                }
-                else if (type == 'error') {
-                    erroredUploads.push({ errorMsg: id_or_err, id: message.id })
-                }
-            });
-        });
-        dispatch(persistAllTasks);
-
-        if (messages.length == successfulUploads.length) {
-            setSaveMsg("Successfully Uploaded all " + messages.length + " tasks.");
-        }
-        else if (erroredUploads.length && successfulUploads.length) {
-            setSaveMsg("Few tasks failed to upload on firebase DB " + erroredUploads)
-        }
-        else {
-            setSaveMsg("All Initial Task Uploads Failed.");
-        }
-
-        localStorage.setItem("initCounter", JSON.stringify(1));
-    }
-
-    // dispatch(clearTasks);
-
-    return {
-        saveMsg
+    if (localStorage.getItem("count") === '1') {
+        dispatch(addMultipleTasks(messages));
+        localStorage.setItem("count", "0")
     }
 }
 

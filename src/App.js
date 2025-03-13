@@ -12,6 +12,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import AddTaskComponent from './Components/AddTaskComponent';
 import { useSelector, useDispatch } from 'react-redux';
 import useInit from './Initialize/useInit';
+import { getAllPersistedTasks } from './Store/Reducers/tasksActions';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -61,20 +62,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-localStorage.setItem("initCounter", JSON.stringify(0));
-function App() {
+if (localStorage.getItem('count') == null && localStorage.getItem('count') !== '0') {
+  localStorage.setItem('count', '1');
+}
 
+function App() {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const [openSnack, setOpenSnack] = useState(false);
   const [saveMsg, setSaveMsg] = useState('Null');
 
   const tasks = useSelector((state) => state.tasks);
 
-  let { saveMsg: initSaveMsg } = useInit();
-  
-  useEffect(() => {
-    console.log("init loading: ", initSaveMsg);
-  }, []);
+  useInit();
+
+  if (!tasks.length) {
+    dispatch(getAllPersistedTasks());
+  }
 
   const handleCloseSnack = (event, reason) => {
     if (reason === 'clickaway') {
