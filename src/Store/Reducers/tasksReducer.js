@@ -1,5 +1,3 @@
-import { ADD_TASK, ADD_MULTIPLE_TASKS, EDIT_TASK, GET_ALL_PERSISTED_TASKS, DELETE_TASK, CLEAR_TASKS } from "./tasksConstants";
-import { addTask as addTaskService } from '../../Utilities/services';
 import { createReducer } from "@reduxjs/toolkit";
 import { addMultipleTasks } from "./tasksActions";
 
@@ -14,6 +12,10 @@ const tasksReducer = createReducer(initialState, (builder) => {
     builder
         .addCase("ADD_TASK", (state, action) => {
             state.tasks.push(action.payload);
+        })
+        .addCase("EDIT_TASK", (state, action) => {
+            console.log(action.payload, 'action.payload...')
+            state.tasks[action.payload.taskId.id-1] = action.payload.taskId.newData
         })
         .addCase("CLEAR_TASKS", (state, action) => {
             state.tasks = [];

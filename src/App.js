@@ -9,10 +9,11 @@ import {
   List, ListItem, ListItemAvatar, ListItemText, ListSubheader, Avatar, Snackbar, Box
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
-import AddTaskComponent from './Components/AddTaskComponent';
+import AddEditTaskComponent from './Components/AddEditTaskComponent';
 import { useSelector, useDispatch } from 'react-redux';
 import useInit from './Initialize/useInit';
 import Loader from './Components/shared/Loader'
+import EditIcon from '@material-ui/icons/Edit';
 
 const useStyles = makeStyles((theme) => ({
   popoverRoot: {
@@ -81,10 +82,18 @@ function App() {
     setOpenSnack(false);
   };
 
+  const [isEdit, setIsEdit] = useState({ val: false, id: '', firebaseId: '' });
   const [anchorEl, setAnchorEl] = useState(null);
+
   const handleClick = (event) => {
+    setIsEdit(prev => ({ ...prev, val: false }));
     setAnchorEl(event.currentTarget);
   };
+
+  const handleEdit = (event, id, firebaseId) => {
+    setIsEdit({ val: true, id, firebaseId });
+    setAnchorEl(event.currentTarget);
+  }
 
   const handleClose = (e, snackMsg) => {
     e.preventDefault();
@@ -114,7 +123,7 @@ function App() {
           >
             {tasks.status == "loading" && <Loader />}
           </Box>
-          {tasks.tasks.map(({ id, heading, description, imageUrl }) => (
+          {tasks.tasks.map(({ id, heading, description, imageUrl, firebaseId }) => (
             <React.Fragment key={id}>
               {id === 1 && <ListSubheader className={classes.subheader}>Today</ListSubheader>}
               {id === 8 && <ListSubheader className={classes.subheader}>Yesterday</ListSubheader>}
@@ -122,7 +131,7 @@ function App() {
                 <ListItemAvatar>
                   <Avatar alt="Profile Picture" src={imageUrl} />
                 </ListItemAvatar>
-                <ListItemText primary={heading} secondary={description} />
+                <ListItemText primary={heading} secondary={description} /><EditIcon color="secondary" onClick={(e) => handleEdit(e, id, firebaseId)} />
               </ListItem>
             </React.Fragment>
           ))}
@@ -146,7 +155,7 @@ function App() {
               paper: classes.popoverPaper
             }}
           >
-            <AddTaskComponent handleClose={handleClose} />
+            <AddEditTaskComponent handleClose={handleClose} isEdit={isEdit} />
           </Popover>
           <Snackbar
             anchorOrigin={{

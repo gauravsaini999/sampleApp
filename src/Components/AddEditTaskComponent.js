@@ -8,7 +8,7 @@ import {
 } from '@material-ui/pickers';
 import { Grid, TextField, Button, FormControl } from '@material-ui/core';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import { addTask as addTaskService } from '../Utilities/services';
+import { addTask as addTaskService, updateTask } from '../Utilities/services';
 import { useSelector, useDispatch } from 'react-redux';
 import { addTask, editTask, getTasks, deleteTasks } from '../Store/Reducers/tasksActions';
 
@@ -74,7 +74,7 @@ function UploadForm() {
     );
 }
 
-const AddTaskComponent = ({handleClose}) => {
+const AddEditTaskComponent = ({handleClose, isEdit}) => {
     const tasks = useSelector((state) => state.tasks);
     const dispatch = useDispatch();
 
@@ -95,17 +95,34 @@ const AddTaskComponent = ({handleClose}) => {
 
     const handleSave = (e) => {
         e.preventDefault();
-        state['id'] = tasks.tasks.length + 1
-        addTaskService(state, (id_or_err, type) => {
-            if (type == 'success') {
-                console.log(id_or_err);
-                handleClose(e, 'Record has been saved with id: ' + id_or_err + ' in firebase');
-            }
-            else if ( type == 'error' ) {
-                handleClose(e, 'Error saving record: ' + id_or_err + ' in firebase. You have to try again.');
-            }
-        });
-        dispatch(addTask(state));
+        if (!isEdit['val']) {
+            state['id'] = tasks.tasks.length + 1;
+            addTaskService(state, (id_or_err, type) => {
+                if (type == 'success') {
+                    console.log(id_or_err);
+                    handleClose(e, 'Record has been saved with id: ' + id_or_err + ' in firebase');
+                }
+                else if (type == 'error') {
+                    handleClose(e, 'Error saving record: ' + id_or_err + ' in firebase. You have to try again.');
+                }
+            });
+            dispatch(addTask(state));
+        }
+        else {
+            console.log(isEdit, 'isEdit...')
+            updateTask(isEdit['firebaseId'], state, (id_or_err, type) => {
+                if (type == 'success') {
+                    console.log(id_or_err);
+                    handleClose(e, 'Record has been saved with id: ' + id_or_err + ' in firebase');
+                }
+                else if (type == 'error') {
+                    handleClose(e, 'Error saving record: ' + id_or_err + ' in firebase. You have to try again.');
+                }
+            });
+            state['id'] = isEdit['id'];
+            state['firebaseId'] = isEdit['firebaseId'];
+            dispatch(editTask({ id: isEdit['id'], newData: state }));
+        }
     }
 
     useEffect(() => {
@@ -172,4 +189,4 @@ const AddTaskComponent = ({handleClose}) => {
     )
 }
 
-export default React.memo(AddTaskComponent);
+export default React.memo(AddEditTaskComponent);
