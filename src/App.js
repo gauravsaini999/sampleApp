@@ -111,22 +111,33 @@ const useStyles = makeStyles((theme) => ({
 function App() {
   const classes = useStyles();
   const [openSnack, setOpenSnack] = useState(false);
-  const [saveMsg, setSaveMsg] = useState('');
+  const [saveMsg, setSaveMsg] = useState('Null');
+
   const handleCloseSnack = (event, reason) => {
     if (reason === 'clickaway') {
       return;
     }
     setOpenSnack(false);
   };
+
   const [anchorEl, setAnchorEl] = useState(null);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  const handleClose = (snackMsg) => {
+
+  const handleClose = (e, snackMsg) => {
+    e.preventDefault()
     setAnchorEl(null);
-    setOpenSnack(true);
-    setSaveMsg(snackMsg);
+    if (snackMsg == "") {
+      setOpenSnack(true);
+      setSaveMsg(snackMsg);
+    }
+    else {
+      setOpenSnack(false);
+      setSaveMsg("")
+    }
   };
+
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
   return (

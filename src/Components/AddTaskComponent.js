@@ -79,18 +79,18 @@ const AddTaskComponent = ({handleClose}) => {
     const dispatch = useDispatch();
 
     const [state, setState] = useState({
-        creationDate: new Date(),
+        creationDate: (new Date()).toLocaleDateString(),
         heading: "",
         description: "",
         imageUrl: ""
     })
 
     const handleDateChange = (date) => {
-        setState(prev => ({ ...prev, creationDate: date.toString() }))
+        setState(prev => ({ ...prev, creationDate: date.toLocaleDateString() }))
     };
 
     const handleChange = (e) => {
-        setState(prev => ({ ...prev, [e.target.name]: e.target.value }))
+        setState(prev => ({ ...prev, [e.target.name]: e.target.value.toString() }))
     }
 
     const handleSave = (e) => {
@@ -101,7 +101,7 @@ const AddTaskComponent = ({handleClose}) => {
                 console.log(id_or_err);
                 handleClose('Record has been saved with id: ' + id_or_err + ' in firebase');
             }
-            else {
+            else if ( type == 'error' ) {
                 handleClose('Error saving record: ' + id_or_err + ' in firebase. You have to try again.');
             }
         });
