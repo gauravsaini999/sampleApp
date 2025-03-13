@@ -86,7 +86,7 @@ const AddTaskComponent = ({handleClose}) => {
     })
 
     const handleDateChange = (date) => {
-        setState(prev => ({ ...prev, creationDate: date.toLocaleDateString() }))
+        setState(prev => ({ ...prev, creationDate: date.toLocaleDateString(), id: tasks.length + 1 }))
     };
 
     const handleChange = (e) => {
