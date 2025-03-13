@@ -6,7 +6,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import {
   Popover, AppBar, CssBaseline, Toolbar, Typography, IconButton, Paper, Fab,
-  List, ListItem, ListItemAvatar, ListItemText, ListSubheader, Avatar, Snackbar
+  List, ListItem, ListItemAvatar, ListItemText, ListSubheader, Avatar, Snackbar, Box
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import AddTaskComponent from './Components/AddTaskComponent';
@@ -105,7 +105,15 @@ function App() {
           Tasks Manager
         </Typography>
         <List className={classes.list}>
-          {tasks.status == "loading" && <Loader />}
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="100vh"
+            width="100vw"
+          >
+            {tasks.status == "loading" && <Loader />}
+          </Box>
           {tasks.tasks.map(({ id, heading, description, imageUrl }) => (
             <React.Fragment key={id}>
               {id === 1 && <ListSubheader className={classes.subheader}>Today</ListSubheader>}
