@@ -79,7 +79,6 @@ const AddTaskComponent = ({handleClose}) => {
     const dispatch = useDispatch();
 
     const [state, setState] = useState({
-        id: 0,
         creationDate: new Date(),
         heading: "",
         description: "",
