@@ -1,4 +1,4 @@
-import { ADD_TASK, EDIT_TASK, GET_TASKS, DELETE_TASK, CLEAR_TASKS } from "./tasksConstants";
+import { ADD_TASK, EDIT_TASK, GET_ALL_PERSISTED_TASKS, DELETE_TASK, CLEAR_TASKS, PERSIST_ALL_TASKS } from "./tasksConstants";
 
 export const addTask = (task) => {
     return {
@@ -10,13 +10,13 @@ export const addTask = (task) => {
 export const editTask = (taskId, newData) => {
     return {
         type: EDIT_TASK,
-        payload: {taskId, newData}
+        payload: { taskId, newData }
     }
 }
 
-export const getTasks = () => {
-    return { 
-        type: GET_TASKS,
+export const getAllPersistedTasks = () => {
+    return {
+        type: GET_ALL_PERSISTED_TASKS,
     }
 }
 
@@ -30,5 +30,11 @@ export const deleteTasks = (taskId) => {
 export const clearTasks = () => {
     return {
         type: CLEAR_TASKS
+    }
+}
+
+export const persistAllTasks = () => {
+    return {
+        type: PERSIST_ALL_TASKS
     }
 }

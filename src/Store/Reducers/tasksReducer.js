@@ -1,4 +1,4 @@
-import { ADD_TASK, EDIT_TASK, GET_TASKS, DELETE_TASK, CLEAR_TASKS } from "./tasksConstants";
+import { ADD_TASK, EDIT_TASK, GET_ALL_PERSISTED_TASKS, DELETE_TASK, CLEAR_TASKS, PERSIST_ALL_TASKS } from "./tasksConstants";
 
 const initialState = [];
 
@@ -18,8 +18,9 @@ export default function tasksReducer(state = initialState, action) {
             return [...temp];
         }
             break;
-        case GET_TASKS: {
-            return state;
+        case GET_ALL_PERSISTED_TASKS: {
+            let persistedTasks = JSON.parse(localStorage.getItem("tasks"));
+            return [...persistedTasks];
         }
             break;
         case DELETE_TASK: {
@@ -35,6 +36,11 @@ export default function tasksReducer(state = initialState, action) {
         case CLEAR_TASKS: {
             return [];
         }
+            break;
+        case PERSIST_ALL_TASKS: {
+            localStorage.setItem("tasks", JSON.stringify(state));
+        }
+            break;
         default:
             return state;
     }
