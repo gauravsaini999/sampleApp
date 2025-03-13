@@ -132,11 +132,10 @@ const messages = [
 const useInit = () => {
     let initialize = JSON.parse(localStorage.getItem("initCounter"));
     const dispatch = useDispatch();
-    const [saveMsg, setSaveMsg] = useState("");
+    const [saveMsg, setSaveMsg] = useState("Done Init Uploads");
     let successfulUploads = [];
     let erroredUploads = [];
     if (+initialize == 0) {
-        console.log(initialize, 'initialize value')
         messages.forEach((message) => {
             dispatch(addTask(message));
             addTaskService(message, (id_or_err, type) => {
