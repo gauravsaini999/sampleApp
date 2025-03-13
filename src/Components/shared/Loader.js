@@ -20,7 +20,7 @@ export default function Loader() {
 
     return (
         <div className={classes.root}>
-            <CircularProgress color="secondary" />
+            <CircularProgress />
         </div>
     );
 }
