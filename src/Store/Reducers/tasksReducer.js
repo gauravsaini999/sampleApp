@@ -15,6 +15,9 @@ const tasksReducer = createReducer(initialState, (builder) => {
         .addCase("ADD_TASK", (state, action) => {
             state.tasks.push(action.payload);
         })
+        .addCase("CLEAR_TASKS", (state, action) => {
+            state.tasks = [];
+        })
         .addCase(addMultipleTasks.pending, (state) => {
             state.status = "loading";
         })

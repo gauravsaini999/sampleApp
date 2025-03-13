@@ -73,7 +73,7 @@ function App() {
   const [saveMsg, setSaveMsg] = useState('Null');
 
   const tasks = useSelector((state) => state.tasks);
-  useInit();
+  useInit(); // initialize db
 
   const handleCloseSnack = (event, reason) => {
     if (reason === 'clickaway') {

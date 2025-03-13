@@ -86,7 +86,7 @@ const AddTaskComponent = ({handleClose}) => {
     })
 
     const handleDateChange = (date) => {
-        setState(prev => ({ ...prev, creationDate: date.toLocaleDateString(), id: tasks.length + 1 }))
+        setState(prev => ({ ...prev, creationDate: date.toLocaleDateString() }))
     };
 
     const handleChange = (e) => {
@@ -95,6 +95,7 @@ const AddTaskComponent = ({handleClose}) => {
 
     const handleSave = (e) => {
         e.preventDefault();
+        state['id'] = tasks.tasks.length + 1
         addTaskService(state, (id_or_err, type) => {
             if (type == 'success') {
                 console.log(id_or_err);
