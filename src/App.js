@@ -12,8 +12,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import AddTaskComponent from './Components/AddTaskComponent';
 import { useSelector, useDispatch } from 'react-redux';
 import useInit from './Initialize/useInit';
-import { getAllPersistedTasks } from './Store/Reducers/tasksActions';
-
+import Loader from './Components/shared/Loader'
 
 const useStyles = makeStyles((theme) => ({
   popoverRoot: {
@@ -106,6 +105,7 @@ function App() {
           Tasks Manager
         </Typography>
         <List className={classes.list}>
+          {tasks.status == "loading" && <Loader />}
           {tasks.tasks.map(({ id, heading, description, imageUrl }) => (
             <React.Fragment key={id}>
               {id === 1 && <ListSubheader className={classes.subheader}>Today</ListSubheader>}
