@@ -1,7 +1,7 @@
-import React, { useState, useRef } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { addTask as addTaskService } from '../Utilities/services';
-import { addTask, editTask, getTasks, deleteTasks, persistAllTasks } from '../Store/Reducers/tasksActions';
+import { addTask, editTask, getTasks, deleteTasks, persistAllTasks, clearTasks } from '../Store/Reducers/tasksActions';
 import { images } from '../Utilities/URLs';
 
 const messages = [
@@ -161,6 +161,8 @@ const useInit = () => {
 
         localStorage.setItem("initCounter", JSON.stringify(1));
     }
+
+    // dispatch(clearTasks);
 
     return {
         saveMsg
