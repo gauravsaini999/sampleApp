@@ -95,7 +95,6 @@ const AddTaskComponent = ({handleClose}) => {
 
     const handleSave = (e) => {
         e.preventDefault();
-        dispatch(addTask(state));
         addTaskService(state, (id_or_err, type) => {
             if (type == 'success') {
                 console.log(id_or_err);
@@ -105,10 +104,11 @@ const AddTaskComponent = ({handleClose}) => {
                 handleClose(e, 'Error saving record: ' + id_or_err + ' in firebase. You have to try again.');
             }
         });
+        dispatch(addTask(state));
     }
 
     useEffect(() => {
-        console.log(tasks, 'tasks')
+        console.log(tasks.tasks, 'tasks')
     }, [tasks]);
 
     return (

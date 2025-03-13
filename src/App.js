@@ -73,12 +73,7 @@ function App() {
   const [saveMsg, setSaveMsg] = useState('Null');
 
   const tasks = useSelector((state) => state.tasks);
-
   useInit();
-
-  if (!tasks.length) {
-    dispatch(getAllPersistedTasks());
-  }
 
   const handleCloseSnack = (event, reason) => {
     if (reason === 'clickaway') {
@@ -111,7 +106,7 @@ function App() {
           Tasks Manager
         </Typography>
         <List className={classes.list}>
-          {tasks.map(({ id, heading, description, imageUrl }) => (
+          {tasks.tasks.map(({ id, heading, description, imageUrl }) => (
             <React.Fragment key={id}>
               {id === 1 && <ListSubheader className={classes.subheader}>Today</ListSubheader>}
               {id === 8 && <ListSubheader className={classes.subheader}>Yesterday</ListSubheader>}

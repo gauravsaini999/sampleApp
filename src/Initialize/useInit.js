@@ -132,6 +132,7 @@ const messages = [
 const useInit = () => {
     const dispatch = useDispatch();
     if (localStorage.getItem("count") === '1') {
+        // dispatch(clearTasks())
         dispatch(addMultipleTasks(messages));
         localStorage.setItem("count", "0")
     }
