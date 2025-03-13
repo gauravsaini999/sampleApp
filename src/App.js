@@ -126,15 +126,11 @@ function App() {
   };
 
   const handleClose = (e, snackMsg) => {
-    e.preventDefault()
+    e.preventDefault();
     setAnchorEl(null);
-    if (snackMsg == "") {
+    if (snackMsg !== "backdropClick") {
       setOpenSnack(true);
       setSaveMsg(snackMsg);
-    }
-    else {
-      setOpenSnack(false);
-      setSaveMsg("")
     }
   };
 
