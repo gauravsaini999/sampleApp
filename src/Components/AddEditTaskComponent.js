@@ -97,16 +97,18 @@ const AddEditTaskComponent = ({handleClose, isEdit}) => {
         e.preventDefault();
         if (!isEdit['val']) {
             state['id'] = tasks.tasks.length + 1;
+            let firebaseId;
             addTaskService(state, (id_or_err, type) => {
                 if (type == 'success') {
-                    console.log(id_or_err);
+                    firebaseId = id_or_err;
+                    let newState = { ...state, firebaseId };
+                    dispatch(addTask(newState));
                     handleClose(e, 'Record has been saved with id: ' + id_or_err + ' in firebase');
                 }
                 else if (type == 'error') {
                     handleClose(e, 'Error saving record: ' + id_or_err + ' in firebase. You have to try again.');
                 }
             });
-            dispatch(addTask(state));
         }
         else {
             console.log(isEdit, 'isEdit...')
